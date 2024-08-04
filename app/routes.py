@@ -14,15 +14,8 @@ REUTERS_RSS = 'https://www.reutersagency.com/feed/?best-topics=business-finance'
 
 @app.route('/')
 def index():
-  current_date = datetime.now()
-  seven_months_prior = current_date - relativedelta(months=7)
-
-  sp500 = yf.download('^GSPC', start=seven_months_prior.strftime('%Y-%m-%d'), end=current_date.strftime('%Y-%m-%d'))
-  sp500.reset_index(inplace=True)
-
-  data = sp500[['Date', 'Close']].to_dict(orient='records')
-
-  return render_template('index.html', data=data)
+  graphs = load_graphs()
+  return render_template('index.html', graphs=load_graphs())
   
 @app.route('/cnn')
 def cnn():
@@ -39,6 +32,44 @@ def bloomberg():
 @app.route('/reuters')
 def reuters():
   return render_template('feed.html', news_title='Reuters', feed=fetch_rss_feed(REUTERS_RSS))
+
+def load_graphs():
+  sp = {
+    'title': 'S&P 500 Price Index',
+    'data': fetchIndex('^GSPC'),
+    'id': 'sp500'
+  }
+
+  nsdq = {
+     'title': 'NASDAQ Composite Index',
+     'data': fetchIndex('^IXIC'),
+     'id': 'nsdq'
+  }
+
+  dow = {
+    'title': 'Dow Jones Industrial Average',
+    'data': fetchIndex('^DJI'),
+    'id': 'dowJones'
+  }
+
+  btc = {
+    'title': 'Bitcoin',
+    'data': fetchIndex('BTC-USD'),
+    'id': 'btcUSD'
+  }
+
+  return [sp, nsdq, dow, btc]
+
+def fetchIndex(index):
+  current_date = datetime.now()
+  seven_months_prior = current_date - relativedelta(months=7)
+  startDate = seven_months_prior.strftime('%Y-%m-%d')
+  endDate = current_date.strftime('%Y-%m-%d')
+
+  response = yf.download(index, start=startDate, end=endDate)
+  response.reset_index(inplace=True)
+
+  return response[['Date', 'Close']].to_dict(orient='records')
 
 def fetch_rss_feed(url):
   entries = []
