@@ -3,17 +3,15 @@
 {% block title %}Home - MySite{% endblock %}
 
 {% block content %}
-<div class="container mx-auto mt-10 flex justify-center">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- Card 1 -->
-      <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
-          <img src="https://via.placeholder.com/400x200" alt="Sample Image 1" class="rounded-t-lg">
-          <div class="mt-4">
-              <h2 class="text-xl font-bold">Card Title 1</h2>
-              <p class="mt-2 text-gray-300">This is a sample text for the first card. It contains some placeholder text and an image.</p>
-          </div>
-      </div>
-      <!-- Card 2 -->
+<div class="container mx-auto mt-10 flex flex-col justify-center p-3">
+  <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+    <div class="container mx-auto p-4">
+      <h1 class="text-3xl font-bold mb-6">S&P 500 Index Price</h1>
+      <canvas id="sp500" style="width: 100%;"></canvas>
+    </div>
+  </div>
+
+  <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
           <img src="https://via.placeholder.com/400x200" alt="Sample Image 2" class="rounded-t-lg">
           <div class="mt-4">
@@ -21,6 +19,40 @@
               <p class="mt-2 text-gray-300">This is a sample text for the second card. It contains some placeholder text and an image.</p>
           </div>
       </div>
-  </div>
+  </div> -->
 </div>
+
+<script>
+  const data = {{ data|tojson|safe }};
+  const dates = data.map(item => formatDate(item.Date));
+  const prices = data.map(item => item.Close);
+  
+  try {
+    const ctx = document.getElementById('sp500').getContext("2d");
+    let lineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [{
+                label: 'S&P 500 Closing Price',
+                data: prices,
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                borderWidth: 1
+            }]
+        }
+    });
+  } catch (e) {
+    alert(e)
+  }
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+</script>
+
 {% endblock %}
