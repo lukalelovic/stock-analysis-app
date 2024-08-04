@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - MySite{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-10 flex justify-center">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Card 1 -->
+      <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+          <img src="https://via.placeholder.com/400x200" alt="Sample Image 1" class="rounded-t-lg">
+          <div class="mt-4">
+              <h2 class="text-xl font-bold">Card Title 1</h2>
+              <p class="mt-2 text-gray-300">This is a sample text for the first card. It contains some placeholder text and an image.</p>
+          </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+          <img src="https://via.placeholder.com/400x200" alt="Sample Image 2" class="rounded-t-lg">
+          <div class="mt-4">
+              <h2 class="text-xl font-bold">Card Title 2</h2>
+              <p class="mt-2 text-gray-300">This is a sample text for the second card. It contains some placeholder text and an image.</p>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
