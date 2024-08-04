@@ -4,6 +4,7 @@ from app import app
 
 CNN_RSS = 'http://rss.cnn.com/rss/money_markets.rss'
 YAHOO_RSS = 'https://finance.yahoo.com/news/rssindex.rss'
+BLOOMBERG_RSS = 'https://feeds.bloomberg.com/markets/news.rss'
 
 @app.route('/')
 def index():
@@ -11,11 +12,15 @@ def index():
   
 @app.route('/cnn')
 def cnn():
-  return render_template('feed.html', news_title='CNN', feed=fetch_rss_feed(CNN_RSS))
+  return render_template('feed.html', news_title='CNN', logo='cnn.png', feed=fetch_rss_feed(CNN_RSS))
 
 @app.route('/yahoo')
 def yahoo():
-  return render_template('feed.html', news_title='Yahoo', feed=fetch_rss_feed(YAHOO_RSS))
+  return render_template('feed.html', news_title='Yahoo', logo='yahoo.png', feed=fetch_rss_feed(YAHOO_RSS))
+
+@app.route('/bloomberg')
+def bloomberg():
+  return render_template('feed.html', news_title='Bloomberg', logo='bloomberg.jpg', feed=fetch_rss_feed(BLOOMBERG_RSS))
 
 def fetch_rss_feed(url):
   entries = []
