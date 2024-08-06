@@ -32,7 +32,6 @@ def fetch_rss_feed(url):
         # For media content, check if a thumbnail URL is present
         for content in entry.media_content:
             thumbnail_url = content.get('url')
-            print(thumbnail_url)
     elif 'enclosures' in entry:
         # Check enclosure for media content
         for enclosure in entry.enclosures:
@@ -58,7 +57,10 @@ def get_all_headlines(feed):
   all_headlines = []
   
   for entry in feed:
-    all_headlines.append(entry['title'])
+    if 'summary' in entry and entry['summary'] is not None:
+      all_headlines.append(entry['summary'])
+    else:
+      all_headlines.append(entry['title'])
   
   return all_headlines
 
@@ -70,8 +72,8 @@ all_headlines.extend(get_all_headlines(reutersFeed))
 
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
-def summarize_headlines(headlines, max_length=512, chunk_size=400):
-    text = " ".join(headlines)
+def summarize_headlines(max_length=512, chunk_size=400):
+    text = " ".join(all_headlines)
     
     tokens = summarizer.tokenizer.tokenize(text)
     
@@ -86,5 +88,3 @@ def summarize_headlines(headlines, max_length=512, chunk_size=400):
     else:
       summary = summarizer(text, max_length=max_length, min_length=30, do_sample=False)[0]['summary_text']
       return summary
-
-summary = summarize_headlines(all_headlines)
