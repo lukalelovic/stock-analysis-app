@@ -7,8 +7,50 @@
   <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
     <div class="container mx-auto p-4">
       <h1 class="text-3xl font-bold mb-6">AI Analysis</h1>
-      <div id="ai-analysis" class="content-container">
+      <div id="ai-analysis" class="content-container space-x-2">
         <div class="spinner"></div>
+        <p>Scanning market headlines...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 gap-2 text-center">
+    <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+      <div class="mt-4">
+        <h2 class="text-xl font-bold">Today's Outlook</h2>
+        <p>Market relative to the open?</p>
+        {% if goodOutlook %}
+          <h4 class="mt-2 text-green-400 text-bold">UP</h4>
+        {% else %}
+          <h4 class="mt-2 text-red-400 text-bold">DOWN</h4>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+      <div class="mt-4">
+          <h2 class="text-xl font-bold">S&P 20-Day</h2>
+          <p>S&P today vs 20-day mean</p>
+
+          {% if trend > 150.0 %}
+            <h4 class="mt-2 text-green-400 text-bold">{{ trend }}%</h4>
+          {% elif trend > 100.0 %}
+            <h4 class="mt-2 text-gray-400 text-bold">{{ trend }}%</h4>
+          {% else %}
+            <h4 class="mt-2 text-red-400 text-bold">{{ trend }}%</h4>
+          {% endif %}
+      </div>
+    </div>
+
+    <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+      <div class="mt-4">
+          <h2 class="text-xl font-bold">Volatility</h2>
+          <p>S&P today vs yesterday</p>
+          {% if volatility > 2 %}
+            <h4 class="mt-2 text-red-400 text-bold">HIGH</h4>
+          {% else %}
+            <h4 class="mt-2 text-green-400 text-bold">STABLE</h4>
+          {% endif %}
       </div>
     </div>
   </div>
@@ -25,16 +67,6 @@
   {% else %}
       <p>Could not load charts.</p>
   {% endif %}
-
-  <!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
-          <img src="https://via.placeholder.com/400x200" alt="Sample Image 2" class="rounded-t-lg">
-          <div class="mt-4">
-              <h2 class="text-xl font-bold">Card Title 2</h2>
-              <p class="mt-2 text-gray-300">This is a sample text for the second card. It contains some placeholder text and an image.</p>
-          </div>
-      </div>
-  </div> -->
 </div>
 
 <script>

@@ -1,7 +1,12 @@
 from flask import render_template, jsonify, flash, redirect, url_for, request
 from app import app, models, news
+import datetime
 
 graphs = models.load_graphs()
+goodOutlook = models.goodOutlook(graphs[0]['data'])
+trend = models.trend(graphs[0]['data'])
+volatility = models.volatility(graphs[0]['data'])
+
 summary = None
 
 def load_summary():
@@ -12,7 +17,7 @@ def load_summary():
 
 @app.route('/')
 def index():
-  return render_template('index.html', graphs=graphs)
+  return render_template('index.html', graphs=graphs, goodOutlook=goodOutlook, trend=trend, volatility=volatility)
   
 @app.route('/cnn')
 def cnn():

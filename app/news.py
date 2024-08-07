@@ -57,10 +57,7 @@ def get_all_headlines(feed):
   all_headlines = []
   
   for entry in feed:
-    if 'summary' in entry and entry['summary'] is not None:
-      all_headlines.append(entry['summary'])
-    else:
-      all_headlines.append(entry['title'])
+    all_headlines.append(entry['title'])
   
   return all_headlines
 
@@ -72,7 +69,7 @@ all_headlines.extend(get_all_headlines(reutersFeed))
 
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
-def summarize_headlines(max_length=512, chunk_size=400):
+def summarize_headlines(max_length=50, chunk_size=400):
     text = " ".join(all_headlines)
     
     tokens = summarizer.tokenizer.tokenize(text)
