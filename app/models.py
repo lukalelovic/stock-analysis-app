@@ -4,6 +4,7 @@ import yfinance as yf
 import feedparser
 import time
 import pandas as pd
+import numpy as np
 import random
 import json
 
@@ -81,7 +82,7 @@ def volatility(data):
   df.set_index('Date', inplace=True)
 
   daily_returns = df['Close'].pct_change()
-  return round(daily_returns.std() * 100, 2)  # Percentage
+  return round(daily_returns.std() * np.sqrt(252) * 100, 2)  # Percentage
 
 def load_data(filename, max_age_days=1):
   try:

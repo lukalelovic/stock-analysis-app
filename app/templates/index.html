@@ -45,11 +45,13 @@
     <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
       <div class="mt-4">
           <h2 class="text-xl font-bold">Volatility</h2>
-          <p>S&P today vs yesterday</p>
-          {% if volatility > 2 %}
-            <h4 class="mt-2 text-red-400 text-bold">HIGH</h4>
+          <p>S&P deviation from average</p>
+          {% if volatility >= 30 %}
+            <h4 class="mt-2 text-red-400 text-bold">{{ volatility }}%</h4>
+          {% elif volatility >= 15 %}
+          <h4 class="mt-2 text-yellow-400 text-bold">{{ volatility }}%</h4>
           {% else %}
-            <h4 class="mt-2 text-green-400 text-bold">STABLE</h4>
+            <h4 class="mt-2 text-green-400 text-bold">{{ volatility }}%</h4>
           {% endif %}
       </div>
     </div>
